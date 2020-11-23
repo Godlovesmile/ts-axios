@@ -52,6 +52,9 @@ router.get('/error/timeout', function (req, res) {
 		});
 	}, 3000);
 });
+router.post('/extend/get', (req, res) => {
+	res.json({ test: '测试extend' });
+});
 
 app.use(router);
 
