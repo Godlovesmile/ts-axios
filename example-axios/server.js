@@ -55,6 +55,9 @@ router.get('/error/timeout', function (req, res) {
 router.post('/extend/get', (req, res) => {
 	res.json({ test: '测试extend' });
 });
+router.get('/interceptor/get', (req, res) => {
+	res.json({ data: 1 });
+});
 
 app.use(router);
 

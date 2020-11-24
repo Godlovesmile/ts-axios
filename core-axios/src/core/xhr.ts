@@ -13,7 +13,6 @@ export default function xhr(config: AxiosRequestConfig): void {
     if (timeout) {
       request.timeout = timeout
     }
-
     request.open(method?.toUpperCase(), url, true)
 
     request.onreadystatechange = function handleLoad() {
