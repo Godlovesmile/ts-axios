@@ -1,4 +1,5 @@
-import { isPlainObject } from './utils'
+import { Method } from '../types'
+import { deepMerge, isPlainObject } from './utils'
 
 function normalizeHeaderName(headers: any, normalizedName: string): void {
   if (!headers) return
@@ -27,7 +28,7 @@ export function parseHeaders(headers: string): any {
   if (!headers) {
     return parsed
   }
-  console.log('--- before headers ---', headers)
+  
   headers.split('\r\n').forEach(line => {
     let [key, val] = line.split(':')
     key = key.trim().toLowerCase()
@@ -39,6 +40,22 @@ export function parseHeaders(headers: string): any {
     }
     parsed[key] = val
   })
-  console.log('--- after headers ---', parsed)
+  
   return parsed
+}
+
+// 通过 deepMerge 的方式把 common、post 的属性拷贝到 headers 这一级，然后再把 common、post 这些属性删掉
+export function flattenHeaders(headers: any, method: Method): any {
+  if (!headers) {
+    return headers
+  }
+  headers = deepMerge(headers.common || {}, headers[method] || {}, headers)
+
+  const methodsToDelete = ['delete', 'get', 'head', 'options', 'post', 'put', 'patch', 'common']
+
+  methodsToDelete.forEach(method => {
+    delete headers[method]
+  })
+
+  return headers
 }

@@ -9,6 +9,7 @@ export default class InterceptorManager<T> {
   private interceptors: Array<Interceptor<T> | null>
 
   constructor() {
+    console.log('InterceptorManager')
     this.interceptors = []
   }
 
@@ -26,7 +27,6 @@ export default class InterceptorManager<T> {
   }
 
   eject(id: number): void {
-    console.log('--- eject ---')
     if (this.interceptors[id]) {
       this.interceptors[id] = null
     }

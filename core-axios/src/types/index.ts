@@ -14,6 +14,10 @@ export type Method =
   | 'patch'
   | 'PATCH'
 
+export interface AxiosTransformer {
+  (data: any, headers?: any): any
+}
+
 export interface AxiosRequestConfig {
   url?: string
   method?: Method
@@ -22,6 +26,9 @@ export interface AxiosRequestConfig {
   headers?: any
   responseType?: XMLHttpRequestResponseType
   timeout?: number
+  [propName: string]: any
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  tranformResponse?: AxiosTransformer | AxiosTransformer[]
 }
 
 export interface AxiosResponse<T = any> {

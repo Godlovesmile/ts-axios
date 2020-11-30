@@ -63,7 +63,7 @@ export default function xhr(config: AxiosRequestConfig): void {
         createError(`Timeout of ${config.timeout} ms exceeded`, config, 'ECONNABORTED', request)
       )
     }
-
+    
     Object.keys(headers).forEach(name => {
       if (data === null && name.toLowerCase() === 'content-type') {
         delete headers[name]

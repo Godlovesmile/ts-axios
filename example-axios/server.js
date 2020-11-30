@@ -58,6 +58,9 @@ router.post('/extend/get', (req, res) => {
 router.get('/interceptor/get', (req, res) => {
 	res.json({ data: 1 });
 });
+router.post('/config/post', (req, res) => {
+	res.json({ test: '测试config' });
+});
 
 app.use(router);
 
