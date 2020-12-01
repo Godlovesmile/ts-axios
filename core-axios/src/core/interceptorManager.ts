@@ -9,7 +9,6 @@ export default class InterceptorManager<T> {
   private interceptors: Array<Interceptor<T> | null>
 
   constructor() {
-    console.log('InterceptorManager')
     this.interceptors = []
   }
 
