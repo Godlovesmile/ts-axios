@@ -61,6 +61,13 @@ router.get('/interceptor/get', (req, res) => {
 router.post('/config/post', (req, res) => {
 	res.json({ test: '测试config' });
 });
+router.get('/cancel/get', (req, res) => {
+	res.json({ cancel: '取消测试 get 方式' });
+});
+router.post('/cancel/post', (req, res) => {
+	res.json({ cancel: '取消测试 post 方式' });
+});
+
 
 app.use(router);
 

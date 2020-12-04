@@ -4,7 +4,7 @@ import { createError } from '../helpers/error'
 
 export default function xhr(config: AxiosRequestConfig): void {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = 'get', headers, responseType, timeout } = config
+    const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken } = config
     const request = new XMLHttpRequest()
 
     if (responseType) {
@@ -13,6 +13,14 @@ export default function xhr(config: AxiosRequestConfig): void {
     if (timeout) {
       request.timeout = timeout
     }
+    // 取消请求
+    if (cancelToken) {
+      cancelToken.promise.then(reason => {
+        request.abort()
+        reject(reason)
+      })
+    }
+
     request.open(method?.toUpperCase(), url, true)
 
     request.onreadystatechange = function handleLoad() {
@@ -63,7 +71,7 @@ export default function xhr(config: AxiosRequestConfig): void {
         createError(`Timeout of ${config.timeout} ms exceeded`, config, 'ECONNABORTED', request)
       )
     }
-    
+
     Object.keys(headers).forEach(name => {
       if (data === null && name.toLowerCase() === 'content-type') {
         delete headers[name]

@@ -14,10 +14,18 @@ import tranformData from './tranformData'
 //   })
 // }
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
+  // 发送请求前检查配置的cancelToken是否有效, 如果已经使用过, 直接抛出异常
+  thorwIfCancellationRequested(config)
   processConfig(config)
   return xhr(config).then(res => {
     return transformResponeseData(res)
   })
+}
+
+function thorwIfCancellationRequested(config: AxiosRequestConfig): void {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested()
+  }
 }
 
 function processConfig(config: AxiosRequestConfig): void {
