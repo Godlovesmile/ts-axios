@@ -31,6 +31,14 @@ export interface AxiosRequestConfig {
   tranformResponse?: AxiosTransformer | AxiosTransformer[]
   // 取消请求
   cancelToken?: CancelToken
+  withCredentials?: boolean
+  xsrfCookieName?: string
+  xsrfHeaderName?: string
+  onDownloadProgress?: (e: ProgressEvent) => void
+  onUploadProgress?: (e: ProgressEvent) => void
+  validateStatus?: (status: number) => boolean 
+  paramsSerializer?: (params: any) => string
+  baseURL?: string
 }
 
 // CancelToken 是实例类型的接口定义
@@ -106,6 +114,12 @@ export interface Axios {
   put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
 
   patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+
+  getUri(config?: AxiosRequestConfig): string
+}
+
+export interface AxiosClassStatic {
+  new (config: AxiosRequestConfig): Axios
 }
 
 // AxiosInstance 接口继承 Axios, 是一个混合类型接口
@@ -122,6 +136,12 @@ export interface AxiosStatic extends AxiosInstance {
   CancelToken: CancelTokenStatic
   Cancel: CancelStatic
   isCancel: (value: any) => boolean
+
+  all<T>(promises: Array<T | Promise<T>>): Promise<T[]>
+
+  spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R
+
+  Axios: AxiosClassStatic
 }
 
 // 拦截器处理

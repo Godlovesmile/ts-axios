@@ -4,6 +4,7 @@ import { buildURL } from '../helpers/buildUrl'
 // import { transformRequest, transformResponse } from '../helpers/data'
 import { flattenHeaders, processHeaders } from '../helpers/headers'
 import tranformData from './tranformData'
+import { combineURL, isAbsoluteURL } from '../helpers/utils'
 
 // 创建文件入口
 // function axios(config: AxiosRequestConfig): AxiosPromise {
@@ -13,7 +14,7 @@ import tranformData from './tranformData'
 //     return transformResponeseData(res)
 //   })
 // }
-export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
+export function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
   // 发送请求前检查配置的cancelToken是否有效, 如果已经使用过, 直接抛出异常
   thorwIfCancellationRequested(config)
   processConfig(config)
@@ -36,9 +37,12 @@ function processConfig(config: AxiosRequestConfig): void {
   config.headers = flattenHeaders(config.headers, config.method!)
 }
 
-function transformUrl(config: AxiosRequestConfig): string {
-  const { url, params } = config
-  return buildURL(url, params)
+export function transformUrl(config: AxiosRequestConfig): string {
+  const { url, params, paramsSerializer, baseURL } = config
+  if (baseURL && !isAbsoluteURL(url!)) {
+    url = combineURL(baseURL, url)
+  }
+  return buildURL(url, params, paramsSerializer)
 }
 
 // function transformRequestData(config: AxiosRequestConfig): any {
